@@ -7,7 +7,7 @@ class HomeProductWishlistEventClicked extends HomeEvent {}
 class HomeProductFavoriteEventClicked extends HomeEvent {}
 
 // This event navigates the favorites page
-class HomeNavigateToFavoritePageEvent extends HomeEvent {}
+class HomeNavigateToCartPageEvent extends HomeEvent {}
 
 // This event navigates the wishlist page
 class HomeNavigateToWishlistPageEvent extends HomeEvent {}

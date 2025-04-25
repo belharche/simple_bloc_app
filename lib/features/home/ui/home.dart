@@ -1,23 +1,28 @@
 import 'package:bloc_app/features/home/bloc/home_bloc.dart';
 import 'package:bloc_app/features/home/bloc/home_event.dart';
+import 'package:bloc_app/features/home/bloc/home_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class HomePage extends StatelessWidget {
+  HomePage({super.key});
 
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  HomeBloc homeBloc = HomeBloc();
+  final HomeBloc homeBloc = HomeBloc();
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer(
       bloc: homeBloc,
-      listener: (context, state) {},
+      listenWhen: (previous, current) => current is HomeActionState,
+      buildWhen: (previous, current) => current is! HomeActionState,
+      listener: (context, state) {
+        if (state is HomeNavigateToCartState) {
+          Navigator.pushNamed(context, '/cart');
+        }
+        if (state is HomeNavigateToWishlistState) {
+          Navigator.pushNamed(context, '/wishlist');
+        }
+      },
       builder:
           (context, state) => Scaffold(
             appBar: AppBar(
@@ -26,13 +31,13 @@ class _HomePageState extends State<HomePage> {
               actions: [
                 IconButton(
                   onPressed: () {
-                    homeBloc.add(HomeProductFavoriteEventClicked());
+                    homeBloc.add(HomeNavigateToWishlistPageEvent());
                   },
                   icon: Icon(Icons.favorite_border),
                 ),
                 IconButton(
                   onPressed: () {
-                    homeBloc.add(HomeProductWishlistEventClicked());
+                    homeBloc.add(HomeNavigateToCartPageEvent());
                   },
                   icon: Icon(Icons.local_grocery_store_outlined),
                 ),

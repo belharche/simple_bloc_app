@@ -1,4 +1,6 @@
+import 'package:bloc_app/features/cart/ui/cart.dart';
 import 'package:bloc_app/features/home/ui/home.dart';
+import 'package:bloc_app/features/wishlist/ui/wishlist.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -10,9 +12,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: HomePage(),
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
+      routes: {
+        '/': (context) => HomePage(),
+        '/cart': (context) => CartPage(),
+        '/wishlist': (context) => WishlistPage(),
+      },
     );
   }
 }

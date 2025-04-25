@@ -8,7 +8,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeBloc() : super(HomeInitial()) {
     on<HomeProductFavoriteEventClicked>(homeProductFavoriteEventClicked);
     on<HomeProductWishlistEventClicked>(homeProductWishlistEventClicked);
-    on<HomeNavigateToFavoritePageEvent>(homeNavigateToFavoritePageEvent);
+    on<HomeNavigateToCartPageEvent>(homeNavigateToCartPageEvent);
     on<HomeNavigateToWishlistPageEvent>(homeNavigateToWishlistPageEvent);
   }
 
@@ -26,17 +26,17 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     print("wishlist product is clicked");
   }
 
-  FutureOr<void> homeNavigateToFavoritePageEvent(
-    HomeNavigateToFavoritePageEvent event,
+  FutureOr<void> homeNavigateToCartPageEvent(
+    HomeNavigateToCartPageEvent event,
     Emitter<HomeState> emit,
   ) {
-    print("favorite navigating is clicked");
+    emit(HomeNavigateToCartState());
   }
 
   FutureOr<void> homeNavigateToWishlistPageEvent(
     HomeNavigateToWishlistPageEvent event,
     Emitter<HomeState> emit,
   ) {
-    print("wishlist navigating is clicked");
+    emit(HomeNavigateToWishlistState());
   }
 }
