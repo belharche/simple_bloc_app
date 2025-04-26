@@ -6,10 +6,20 @@ import 'package:bloc_app/features/home/bloc/home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeBloc() : super(HomeInitial()) {
+    on<HomeInitialDataFetchEvent>(homeInitialDataFetchEvent);
     on<HomeProductFavoriteEventClicked>(homeProductFavoriteEventClicked);
     on<HomeProductWishlistEventClicked>(homeProductWishlistEventClicked);
     on<HomeNavigateToCartPageEvent>(homeNavigateToCartPageEvent);
     on<HomeNavigateToWishlistPageEvent>(homeNavigateToWishlistPageEvent);
+  }
+
+  FutureOr<void> homeInitialDataFetchEvent(
+    HomeInitialDataFetchEvent event,
+    Emitter<HomeState> emit,
+  ) async {
+    emit(HomeLoadingState());
+    await Future.delayed(Duration(seconds: 3));
+    emit(HomeLoadedSuccessfulState());
   }
 
   FutureOr<void> homeProductFavoriteEventClicked(

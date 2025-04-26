@@ -4,14 +4,25 @@ import 'package:bloc_app/features/home/bloc/home_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class HomePage extends StatelessWidget {
-  HomePage({super.key});
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   final HomeBloc homeBloc = HomeBloc();
 
   @override
+  void initState() {
+    homeBloc.add(HomeInitialDataFetchEvent());
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return BlocConsumer(
+    return BlocConsumer<HomeBloc, HomeState>(
       bloc: homeBloc,
       listenWhen: (previous, current) => current is HomeActionState,
       buildWhen: (previous, current) => current is! HomeActionState,
@@ -23,8 +34,13 @@ class HomePage extends StatelessWidget {
           Navigator.pushNamed(context, '/wishlist');
         }
       },
-      builder:
-          (context, state) => Scaffold(
+      builder: (context, state) {
+        if (state is HomeInitial || state is HomeLoadingState) {
+          return Scaffold(
+            body: Center(child: CircularProgressIndicator(color: Colors.teal)),
+          );
+        } else if (state is HomeLoadedSuccessfulState) {
+          return Scaffold(
             appBar: AppBar(
               backgroundColor: Colors.teal,
               title: Text('Home'),
@@ -43,7 +59,23 @@ class HomePage extends StatelessWidget {
                 ),
               ],
             ),
-          ),
+          );
+        } else if (state is HomeErrorState) {
+          return Scaffold(
+            backgroundColor: Colors.teal,
+            body: Center(
+              child: Text(
+                'An Error Happened',
+                style: TextStyle(color: Colors.redAccent),
+              ),
+            ),
+          );
+        } else {
+          return Scaffold(
+            body: Center(child: Text('No state has been detected !!!')),
+          );
+        }
+      },
     );
   }
 }
